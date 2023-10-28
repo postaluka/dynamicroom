@@ -53,7 +53,7 @@ export default class Cube extends EventEmitter
         const minCubeSize = 0
         const changeSize = util_math.mapRange(window.innerWidth, 0, maxWindowSize, minCubeSize, maxCubeSize)
         console.log(maxWindowSize, currentWindowSize);
-        console.log('size: ', changeSize);
+        console.log('changeSize: ', changeSize);
         // this.instance.geometry = new THREE.BoxGeometry(changeSizeX, this.sideY, this.sideZ)
     }
 
