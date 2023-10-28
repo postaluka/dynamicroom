@@ -1,5 +1,4 @@
 import * as THREE from "three"
-import * as util_math from 'canvas-sketch-util/math'
 
 import Sizes from "../../Utils/Sizes"
 
@@ -51,9 +50,7 @@ export default class Cube extends EventEmitter
         const currentWindowSize = window.innerWidth
         const maxCubeSize = this.sideX
         const minCubeSize = 0
-        const changeSize = util_math.mapRange(window.innerWidth, 0, maxWindowSize, minCubeSize, maxCubeSize)
         console.log(maxWindowSize, currentWindowSize);
-        console.log('changeSize: ', changeSize);
         // this.instance.geometry = new THREE.BoxGeometry(changeSizeX, this.sideY, this.sideZ)
     }
 

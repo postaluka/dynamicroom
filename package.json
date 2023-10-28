@@ -11,7 +11,6 @@
     "vite": "^4.3.9"
   },
   "dependencies": {
-    "canvas-sketch": "^0.7.7",
     "lil-gui": "^0.18.2",
     "packages": "^0.0.8",
     "three": "^0.153.0"
