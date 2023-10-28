@@ -24,14 +24,14 @@ export default class Camera
     {
         this.instance = new THREE.PerspectiveCamera(35, this.sizes.width / this.sizes.height, 0.1, 1000)
         this.instance.position.set(
-            13.12,
-            5.75,
-            13.13
+            0,
+            2.5,
+            12
         )
         this.instance.rotation.set(
-            -0.36,
-            0.76,
-            0.25
+            0,
+            0,
+            0
         )
         this.scene.add(this.instance)
 
@@ -49,6 +49,11 @@ export default class Camera
             MIDDLE: THREE.MOUSE.DOLLY,
             RIGHT: null //THREE.MOUSE.PAN
         }
+
+        const target = new THREE.Vector3(0, 0, 0)
+        target.set(0, 2, 0)
+        this.controls.target.copy(target)
+        this.controls.update()
     }
 
     setDebug()
