@@ -16,8 +16,8 @@ export default class Cube extends EventEmitter
     {
         super()
 
-        console.log(gsap);
-        console.log(util.math);
+        // console.log(gsap);
+        // console.log(util.math);
 
         this.experience = new Experience()
         this.sizes = new Sizes()
@@ -56,8 +56,9 @@ export default class Cube extends EventEmitter
         const currentWindowSize = window.innerWidth
         const maxCubeSize = this.sideX
         const minCubeSize = 0
-        console.log(maxWindowSize, currentWindowSize);
-        // this.instance.geometry = new THREE.BoxGeometry(changeSizeX, this.sideY, this.sideZ)
+        // console.log(maxWindowSize, currentWindowSize);
+        const changeSizeX = util.math.mapRange(currentWindowSize, 0, maxWindowSize, minCubeSize, maxCubeSize)
+        this.instance.geometry = new THREE.BoxGeometry(changeSizeX, this.sideY, this.sideZ)
     }
 
     debug()
