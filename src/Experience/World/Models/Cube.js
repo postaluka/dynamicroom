@@ -39,10 +39,6 @@ export default class Cube extends EventEmitter
         // Coordinates
         this.instance.position.y = this.sideY / 2
 
-        this.sizes.on('resize', () =>
-        {
-            this.resize()
-        })
 
         // this.debug()
 

@@ -5,6 +5,7 @@ import Experience from "../Experience";
 import Lights from './Lights';
 
 import Cube from './Models/Cube';
+import Room from './Models/Room';
 import Floor from './Models/Floor';
 
 export default class World
@@ -17,6 +18,7 @@ export default class World
         this.lights = new Lights()
 
         this.cube = new Cube()
+        this.room = new Room()
         this.floor = new Floor()
 
         // Add lights
@@ -28,7 +30,8 @@ export default class World
 
         // Add models
         this.scene.add(
-            this.cube.instance,
+            // this.cube.instance,
+            this.room.instance,
             this.floor.instance,
         )
 

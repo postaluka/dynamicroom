@@ -8,6 +8,8 @@ import Camera from './Camera';
 import Renderer from './Renderer';
 import World from './World/World';
 
+import Cube from './World/Models/Cube';
+
 import Textures from './Resources/Texture';
 
 let instance = null
@@ -37,6 +39,8 @@ export default class Experience
         this.camera = new Camera()
         this.renderer = new Renderer()
         this.world = new World()
+
+        this.cube = new Cube()
 
         this.axesHelper = new THREE.AxesHelper(5)
         this.scene.add(this.axesHelper)
@@ -68,6 +72,7 @@ export default class Experience
     {
         this.camera.resize()
         this.renderer.resize()
+        // this.cube.resize()
     }
 
     update()
