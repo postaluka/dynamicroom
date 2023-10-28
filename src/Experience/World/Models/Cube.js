@@ -6,12 +6,16 @@ import EventEmitter from "../../Utils/EventEmitter"
 import Experience from "../../Experience"
 import Materials from "../../Resources/Materials"
 
+import gsap from 'gsap'
+
 
 export default class Cube extends EventEmitter
 {
     constructor()
     {
         super()
+
+        console.log(gsap);
 
         this.experience = new Experience()
         this.sizes = new Sizes()
