@@ -7,6 +7,9 @@ const PARAMS = {
         width: 10,
         height: 10,
         depth: 10
+    },
+    sphere: {
+        radius: 1,
     }
 }
 

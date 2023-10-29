@@ -7,6 +7,7 @@ import Time from "./Utils/Time";
 import Camera from './Camera';
 import Renderer from './Renderer';
 import World from './World/World';
+import Physics from './World/Physics';
 
 import Cube from './World/Models/Cube';
 
@@ -39,6 +40,7 @@ export default class Experience
         this.camera = new Camera()
         this.renderer = new Renderer()
         this.world = new World()
+        this.phyhics = new Physics()
 
         this.cube = new Cube()
 
@@ -79,6 +81,8 @@ export default class Experience
     {
         this.camera.update()
         this.renderer.update()
+        this.world.update()
+        // this.phyhics.tick()
     }
 }
 
