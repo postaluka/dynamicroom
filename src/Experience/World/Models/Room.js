@@ -6,7 +6,7 @@ import PARAMS from "../../Utils/PARAMS"
 import Experience from "../../Experience"
 import Materials from "../../Resources/Materials"
 
-
+import Physics from "../Physics"
 
 
 export default class Room 
@@ -17,71 +17,94 @@ export default class Room
         this.experience = new Experience()
         this.materials = new Materials()
 
-        // Parameters
-        this.widthWall = 10
-        this.heightWall = 10
-
+        this.physics = new Physics()
 
         this.instance = new THREE.Group()
 
-        let status = 1
+        this.status = 1
 
-        for (let i = 0; i < 3; i++)
-        {
-            const wall = new THREE.Mesh(
-                new THREE.PlaneGeometry(this.widthWall, this.heightWall, 1, 1),
-                this.materials.basic
-            )
-
-            this.instance.add(wall)
-
-            if (i % 2 === 0)
-            {
-                wall.position.x = PARAMS.room.width / 2 * status
-                status *= -1
-
-                wall.rotation.y = Math.PI / 2
-                wall.position.y = this.heightWall / 2
-            }
-            if (i % 2 !== 0)
-            {
-                wall.position.z = - PARAMS.room.depth / 2
-                wall.position.y = this.heightWall / 2
-            }
-
-        }
-
-
+        this.setWalls()
+        this.setFloor()
+        this.setBall()
 
         this.debug()
 
+    }
+
+    setBall()
+    {
+        this.ball = new THREE.Mesh(
+            new THREE.SphereGeometry(PARAMS.sphere.radius, 16, 16),
+            this.materials.basic
+        )
+        this.instance.add(this.ball)
+
+        this.ball.position.y = 3
+
+    }
+
+    setWalls()
+    {
+        this.leftWall = new THREE.Mesh(
+            new THREE.PlaneGeometry(PARAMS.room.width, PARAMS.room.height, 1, 1),
+            this.materials.basic
+        )
+        this.backWall = new THREE.Mesh(
+            new THREE.PlaneGeometry(PARAMS.room.width, PARAMS.room.height, 1, 1),
+            this.materials.basic
+        )
+        this.rightWall = new THREE.Mesh(
+            new THREE.PlaneGeometry(PARAMS.room.width, PARAMS.room.height, 1, 1),
+            this.materials.basic
+        )
+
+        this.instance.add(
+            this.leftWall,
+            this.backWall,
+            this.rightWall,
+        )
+
+        this.leftWall.position.x = - PARAMS.room.width / 2
+        this.rightWall.position.x = PARAMS.room.width / 2
+
+        this.leftWall.position.y = PARAMS.room.height / 2
+        this.rightWall.position.y = PARAMS.room.height / 2
+
+        this.leftWall.rotation.y = Math.PI / 2
+        this.rightWall.rotation.y = Math.PI / 2
+
+        this.backWall.position.z = - PARAMS.room.depth / 2
+        this.backWall.position.y = PARAMS.room.height / 2
 
 
     }
 
+    setFloor()
+    {
+        this.floor = new THREE.Mesh(
+            new THREE.PlaneGeometry(PARAMS.floor.sideX, PARAMS.floor.sideY, 1, 1),
+            this.materials.basic
+        )
+        this.instance.add(this.floor)
+
+        this.floor.receiveShadow = true
+        // this.instance.castShadow = true
+
+        // Coordinates
+        this.floor.rotation.x = - Math.PI / 2
+    }
+
     changeWidth(value)
     {
-        let status = 1
-        for (let i = 0; i < 3; i++)
-        {
-            const wall = this.instance.children[i]
+        const widthUpdate = utils.math.mapRange(value, 0, 10, 0, 10)
 
-            if (i % 2 === 0)
-            {
-                wall.position.x = PARAMS.room.width / 2 * status
-                status *= -1
+        this.leftWall.position.x = - PARAMS.room.width / 2
+        this.rightWall.position.x = PARAMS.room.width / 2
 
-                wall.rotation.y = Math.PI / 2
-                wall.position.y = this.heightWall / 2
-            }
-            if (i % 2 !== 0)
-            {
-                const widthUpdate = utils.math.mapRange(value, 0, 10, 0, 10)
-                wall.geometry = new THREE.PlaneGeometry(widthUpdate, this.heightWall, 1, 1)
+        this.backWall.geometry = new THREE.PlaneGeometry(widthUpdate, PARAMS.room.height, 1, 1)
 
-            }
+        this.floor.geometry = new THREE.PlaneGeometry(widthUpdate, PARAMS.floor.sideY, 1, 1)
 
-        }
 
     }
 
@@ -97,6 +120,7 @@ export default class Room
             folderRoom.add(PARAMS.room, 'width', 4, 10, 0.01).name('width').onChange((value) =>
             {
                 this.changeWidth(value)
+
             })
         }
     }

@@ -8,9 +8,14 @@ const PARAMS = {
         height: 10,
         depth: 10
     },
+    floor: {
+        sideX: 10,
+        sideY: 10,
+    },
     sphere: {
-        radius: 1,
-    }
+        radius: 0.85,
+    },
+    objectsToUpdate: [],
 }
 
 export default PARAMS 

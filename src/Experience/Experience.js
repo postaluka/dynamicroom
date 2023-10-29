@@ -81,7 +81,7 @@ export default class Experience
     {
         this.camera.update()
         this.renderer.update()
-        this.world.update()
+        this.phyhics.update(this.world.room.ball, this.phyhics.sphereBody)
         // this.phyhics.tick()
     }
 }
