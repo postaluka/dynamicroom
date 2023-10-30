@@ -7,9 +7,6 @@ import Time from "./Utils/Time";
 import Camera from './Camera';
 import Renderer from './Renderer';
 import World from './World/World';
-import Physics from './World/Physics';
-
-import Cube from './World/Models/Cube';
 
 import Textures from './Resources/Texture';
 
@@ -40,9 +37,6 @@ export default class Experience
         this.camera = new Camera()
         this.renderer = new Renderer()
         this.world = new World()
-        this.phyhics = new Physics()
-
-        this.cube = new Cube()
 
         this.axesHelper = new THREE.AxesHelper(5)
         this.scene.add(this.axesHelper)
@@ -81,8 +75,7 @@ export default class Experience
     {
         this.camera.update()
         this.renderer.update()
-        this.phyhics.update(this.world.room.ball, this.phyhics.sphereBody)
-        // this.phyhics.tick()
+        this.world.update()
     }
 }
 

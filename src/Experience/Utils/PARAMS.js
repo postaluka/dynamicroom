@@ -11,6 +11,7 @@ const PARAMS = {
     floor: {
         sideX: 10,
         sideY: 10,
+        rotateY: 0,
     },
     sphere: {
         radius: 0.85,
