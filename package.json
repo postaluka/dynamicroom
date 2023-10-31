@@ -16,6 +16,8 @@
     "gsap": "^3.12.2",
     "lil-gui": "^0.18.2",
     "packages": "^0.0.8",
-    "three": "^0.153.0"
+    "three": "^0.153.0",
+    "three-bvh-csg": "^0.0.13",
+    "three-mesh-bvh": "^0.6.8"
   }
 }

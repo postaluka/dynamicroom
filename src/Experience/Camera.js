@@ -43,11 +43,11 @@ export default class Camera
         this.controls.enableDamping = true
         this.controls.maxPolarAngle = Math.PI / 2.1
         this.controls.minDistance = 15
-        this.controls.maxDistance = 21
+        // this.controls.maxDistance = 21
         this.controls.mouseButtons = {
             LEFT: THREE.MOUSE.ROTATE,
             MIDDLE: THREE.MOUSE.DOLLY,
-            RIGHT: null //THREE.MOUSE.PAN
+            RIGHT: THREE.MOUSE.PAN //THREE.MOUSE.PAN
         }
 
         const target = new THREE.Vector3(0, 0, 0)

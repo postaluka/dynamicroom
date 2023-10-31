@@ -17,12 +17,9 @@ export default class Physics
         this.world = new CANNON.World()
 
         this.setPhysicsWorld()
-        this.setPhysicSphere()
+        this.setPhysicBall()
         this.setPhysicFloor()
         this.setPhysicWalls()
-
-        console.log(this.world);
-
 
     }
 
@@ -31,15 +28,15 @@ export default class Physics
         this.world.gravity.set(0, -9.82, 0)
     }
 
-    setPhysicSphere()
+    setPhysicBall()
     {
-        this.sphereShape = new CANNON.Sphere(PARAMS.sphere.radius)
-        this.sphereBody = new CANNON.Body({
+        this.ballSphere = new CANNON.Sphere(PARAMS.sphere.radius)
+        this.ballBody = new CANNON.Body({
             mass: 1,
             position: new CANNON.Vec3(-3, PARAMS.sphere.radius + 2),
-            shape: this.sphereShape
+            shape: this.ballSphere
         })
-        this.world.addBody(this.sphereBody)
+        this.world.addBody(this.ballBody)
     }
 
     setPhysicFloor()
@@ -59,46 +56,39 @@ export default class Physics
 
     setPhysicWalls()
     {
-
         this.leftWallShape = new CANNON.Plane()
         this.leftWallBody = new CANNON.Body({
             mass: 0,
             shape: this.leftWallShape,
             position: new CANNON.Vec3(- PARAMS.room.width / 2, PARAMS.room.height / 2, 0)
         })
+        this.rightWallShape = new CANNON.Plane()
+        this.rightWallBody = new CANNON.Body({
+            mass: 0,
+            shape: this.rightWallShape,
+            position: new CANNON.Vec3(PARAMS.room.width / 2, PARAMS.room.height / 2, 0)
+        })
+        this.backWallShape = new CANNON.Plane()
+        this.backWallBody = new CANNON.Body({
+            mass: 0,
+            shape: this.backWallShape,
+            position: new CANNON.Vec3(0, PARAMS.room.height / 2, - PARAMS.room.depth / 2)
+        })
+
         this.world.addBody(this.leftWallBody)
+        this.world.addBody(this.rightWallBody)
+        this.world.addBody(this.backWallBody)
 
         this.leftWallBody.quaternion.setFromAxisAngle(
             new CANNON.Vec3(0, 1, 0),
             Math.PI * 0.5
         )
 
-        // for (let i = 0; i < 3; i++)
-        // {
-        //     const wallShape = new CANNON.Plane()
-        //     const wallBody = new CANNON.Body({
-        //         mass: 0,
-        //         shape: wallShape
-        //     })
-        //     this.world.addBody(this.floorBody)
+        this.rightWallBody.quaternion.setFromAxisAngle(
+            new CANNON.Vec3(0, 1, 0),
+            - Math.PI * 0.5
+        )
 
-        //     if (i % 2 === 0)
-        //     {
-        //         wallBody.position.x = PARAMS.room.width / 2 * this.status
-        //         this.status *= -1
-
-        //         wallBody.position.y = PARAMS.room.height / 2
-        //         wallBody.quaternion.setFromAxisAngle(
-        //             new CANNON.Vec3(-1, 0, 0),
-        //             Math.PI * 0.5
-        //         )
-        //     }
-        //     if (i % 2 !== 0)
-        //     {
-        //         wallBody.position.z = - PARAMS.room.depth / 2
-        //         wallBody.position.y = PARAMS.room.height / 2
-        //     }
-        // }
 
     }
 
@@ -111,7 +101,7 @@ export default class Physics
 
     }
 
-    update(geometry, rigidBody)
+    update()
     {
         const elaspesTime = this.clock.getElapsedTime()
         const deltaTime = elaspesTime - this.oldElapsedTime
@@ -119,9 +109,6 @@ export default class Physics
 
         // Update physics
         this.world.step(1 / 60, deltaTime, 3)
-
-
-        geometry.position.copy(rigidBody.position)
 
         // console.log(deltaTime);
     }
