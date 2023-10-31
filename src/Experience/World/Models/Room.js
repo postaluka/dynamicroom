@@ -40,9 +40,13 @@ export default class Room
 
         this.setFloor()
         this.setBall()
-
+        this.setCube()
+        this.setCeiling()
 
         this.debug()
+
+        this.cubesWireframe()
+        this.wallsWireframe()
 
 
     }
@@ -59,17 +63,115 @@ export default class Room
 
     }
 
-    setPhysicBall()
+    setCube()
     {
-        this.ballShape = new CANNON.Sphere(PARAMS.sphere.radius)
-        this.ballBody = new CANNON.Body({
-            mass: 100,
-            position: new CANNON.Vec3(-3, PARAMS.sphere.radius + 2),
-            shape: this.ballShape
-        })
-        this.world.addBody(this.ballBody)
+        this.cubes = new THREE.Group()
+        this.instance.add(this.cubes)
+        this.cubes.position.set(3, 0.5, 0)
+
+        // this.cubes.rotation.y = - Math.PI / 4
+
+        this.cube01 = new THREE.Mesh(
+            new THREE.BoxGeometry(1, 1, 1),
+            this.materials.basic
+        )
+        this.cube02 = new THREE.Mesh(
+            new THREE.BoxGeometry(1, 1, 1),
+            this.materials.basic
+        )
+        this.cube03 = new THREE.Mesh(
+            new THREE.BoxGeometry(1, 1, 1),
+            this.materials.basic
+        )
+
+        this.cube01.position.set(0, 0, 0)
+        this.cube02.position.set(0, 1, 0)
+        this.cube03.position.set(1, 0, 0)
+
+        this.cubes.add(this.cube01, this.cube02, this.cube03,)
+
+
+
+
+
+
+        // console.log(this.physics.cubeShape.halfExtents.x);
+        // console.log(this.physics.cubeBody.shapes[0].halfExtents.x);
+
     }
 
+    cubesWireframe()
+    {
+        this.cubeShape01 = new THREE.Mesh(
+            new THREE.BoxGeometry(
+                this.physics.cubeShape.halfExtents.x * 2,
+                this.physics.cubeShape.halfExtents.y * 2,
+                this.physics.cubeShape.halfExtents.z * 2
+            ),
+            this.materials.wireframe
+        )
+        this.cubeShape01.geometry.translate(0, 0, 0)
+        this.cubeShape01.position.copy(this.physics.cubeBody.position)
+        this.instance.add(this.cubeShape01)
+
+        this.cubeShape02 = new THREE.Mesh(
+            new THREE.BoxGeometry(
+                this.physics.cubeShape.halfExtents.x * 2,
+                this.physics.cubeShape.halfExtents.y * 2,
+                this.physics.cubeShape.halfExtents.z * 2
+            ),
+            this.materials.wireframe
+        )
+        this.cubeShape02.geometry.translate(0, 1, 0)
+        this.cubeShape02.position.copy(this.physics.cubeBody.position)
+        this.instance.add(this.cubeShape02)
+
+        this.cubeShape03 = new THREE.Mesh(
+            new THREE.BoxGeometry(
+                this.physics.cubeShape.halfExtents.x * 2,
+                this.physics.cubeShape.halfExtents.y * 2,
+                this.physics.cubeShape.halfExtents.z * 2
+            ),
+            this.materials.wireframe
+        )
+        this.cubeShape03.geometry.translate(1, 0, 0)
+        this.cubeShape03.position.copy(this.physics.cubeBody.position)
+        this.instance.add(this.cubeShape03)
+    }
+
+    wallsWireframe()
+    {
+        this.ceilingShape = new THREE.Mesh(
+            new THREE.PlaneGeometry(10, 10, 5, 5),
+            this.materials.wireframe
+        )
+
+        // this.ceilingShape.position.y = 2
+        this.ceilingShape.position.copy(this.physics.ceilingBody.position)
+        this.ceilingShape.quaternion.copy(this.physics.ceilingBody.quaternion)
+        // this.instance.add(this.ceilingShape)
+
+        this.frontWallShape = new THREE.Mesh(
+            new THREE.PlaneGeometry(10, 10, 15, 15),
+            this.materials.wireframe
+        )
+
+        // this.ceilingShape.position.y = 2
+        this.frontWallShape.position.copy(this.physics.frontWallBody.position)
+        this.frontWallShape.quaternion.copy(this.physics.frontWallBody.quaternion)
+        this.instance.add(this.frontWallShape)
+    }
+
+    updateWireframe()
+    {
+        this.cubeShape01.position.copy(this.physics.cubeBody.position)
+        this.cubeShape02.position.copy(this.physics.cubeBody.position)
+        this.cubeShape03.position.copy(this.physics.cubeBody.position)
+
+        this.cubeShape01.quaternion.copy(this.physics.cubeBody.quaternion)
+        this.cubeShape02.quaternion.copy(this.physics.cubeBody.quaternion)
+        this.cubeShape03.quaternion.copy(this.physics.cubeBody.quaternion)
+    }
 
     setWalls()
     {
@@ -96,9 +198,6 @@ export default class Room
 
         this.leftWall.rotation.y = Math.PI / 2
         this.rightWall.rotation.y = Math.PI / 2
-
-
-
 
     }
 
@@ -128,7 +227,6 @@ export default class Room
             this.windowLeftGeometry, this.windowRightGeometry
         ])
 
-
         this.windowsGroup = new Brush(
             this.windowsGroupGeometry,
             this.materials.basic
@@ -147,42 +245,6 @@ export default class Room
         this.instance.add(this.resultLeft);
     }
 
-    setPhysicWalls()
-    {
-        this.leftWallShape = new CANNON.Plane()
-        this.leftWallBody = new CANNON.Body({
-            mass: 0,
-            shape: this.leftWallShape,
-            position: new CANNON.Vec3(- PARAMS.room.width / 2, PARAMS.room.height / 2, 0)
-        })
-        this.rightWallShape = new CANNON.Plane()
-        this.rightWallBody = new CANNON.Body({
-            mass: 0,
-            shape: this.rightWallShape,
-            position: new CANNON.Vec3(PARAMS.room.width / 2, PARAMS.room.height / 2, 0)
-        })
-        this.backWallShape = new CANNON.Plane()
-        this.backWallBody = new CANNON.Body({
-            mass: 0,
-            shape: this.backWallShape,
-            position: new CANNON.Vec3(0, PARAMS.room.height / 2, - PARAMS.room.depth / 2)
-        })
-
-        this.world.addBody(this.leftWallBody)
-        this.world.addBody(this.rightWallBody)
-        this.world.addBody(this.backWallBody)
-
-        this.leftWallBody.quaternion.setFromAxisAngle(
-            new CANNON.Vec3(0, 1, 0),
-            Math.PI * 0.5
-        )
-
-        this.rightWallBody.quaternion.setFromAxisAngle(
-            new CANNON.Vec3(0, 1, 0),
-            - Math.PI * 0.5
-        )
-    }
-
     setFloor()
     {
         this.floor = new THREE.Mesh(
@@ -198,19 +260,21 @@ export default class Room
         this.floor.rotation.x = - Math.PI / 2
     }
 
-    setPhysicFloor()
+    setCeiling()
     {
-        this.floorShape = new CANNON.Plane()
-        this.floorBody = new CANNON.Body({
-            mass: 0,
-            shape: this.floorShape,
-        })
-        this.world.addBody(this.floorBody)
-
-        this.floorBody.quaternion.setFromAxisAngle(
-            new CANNON.Vec3(-1, 0, 0),
-            Math.PI * 0.5
+        this.ceiling = new THREE.Mesh(
+            new THREE.PlaneGeometry(PARAMS.floor.sideX, PARAMS.floor.sideY, 1, 1),
+            this.materials.basic
         )
+        this.instance.add(this.ceiling)
+
+        this.ceiling.receiveShadow = true
+        // this.instance.castShadow = true
+
+        // Coordinates
+        this.ceiling.rotation.x = - Math.PI / 2
+        this.ceiling.position.y = PARAMS.room.height
+
     }
 
     changeWidth(value)
@@ -220,7 +284,6 @@ export default class Room
         this.widthWindowGeometry = utils.math.mapRange(value, 0, 10, 0.5, 1.5)
 
         this.backWall.geometry = new THREE.BoxGeometry(PARAMS.room.width, PARAMS.room.height, 0.25)
-
         this.backWall.geometry.translate(0, PARAMS.room.height / 2, - PARAMS.room.depth / 2)
         this.setWindows()
         this.subtact()
@@ -244,12 +307,13 @@ export default class Room
         // this.world.step(1 / 60, deltaTime, 3)
         this.physics.world.step(1 / 60, deltaTime, 3)
 
-        // this.ball.position.copy(this.ballBody.position)
-        // this.ball.quaternion.copy(this.ballBody.quaternion)
-
         this.ball.position.copy(this.physics.ballBody.position)
         this.ball.quaternion.copy(this.physics.ballBody.quaternion)
 
+        this.cubes.position.copy(this.physics.cubeBody.position)
+        this.cubes.quaternion.copy(this.physics.cubeBody.quaternion)
+
+        this.updateWireframe()
 
 
     }
@@ -284,47 +348,3 @@ export default class Room
 
 
 
-// checkSubtract()
-// {
-//     this.params = {
-//         operation: SUBTRACTION,
-//         useGroups: true,
-//         wireframe: false,
-//     };
-//     // create brushes
-//     this.evaluator = new Evaluator();
-//     this.baseBrush = new Brush(
-//         new THREE.SphereGeometry(2, 16, 16),
-//         new THREE.MeshStandardMaterial({
-//             flatShading: false,
-
-//             polygonOffset: true,
-//             polygonOffsetUnits: 1,
-//             polygonOffsetFactor: 1,
-//         }),
-//     );
-
-//     this.brush = new Brush(
-//         new THREE.BoxGeometry(1.5, 1.5, 1.5),
-//         new THREE.MeshStandardMaterial({
-//             color: 0x80cbc4,
-
-//             polygonOffset: true,
-//             polygonOffsetUnits: 1,
-//             polygonOffsetFactor: 1,
-
-//         }),
-//     );
-
-//     this.brush.geometry.translate(0, 2, 0)
-
-
-
-//     this.evaluator.useGroups = this.params.useGroups;
-//     this.result = this.evaluator.evaluate(this.baseBrush, this.brush, this.params.operation, this.result);
-
-//     this.result.castShadow = true;
-//     this.result.receiveShadow = true;
-//     this.instance.add(this.result);
-
-// }

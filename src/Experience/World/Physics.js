@@ -15,18 +15,21 @@ export default class Physics
         // this.spheres = new Spheres()
 
         this.world = new CANNON.World()
-
-        this.setPhysicsWorld()
-        this.setPhysicBall()
-        this.setPhysicFloor()
-        this.setPhysicWalls()
-
-    }
-
-    setPhysicsWorld()
-    {
         this.world.gravity.set(0, -9.82, 0)
+        this.world.broadphase = new CANNON.SAPBroadphase(this.world)
+
+        this.setPhysicWalls()
+        this.setPhysicBall()
+        this.setPhysicCube()
+        this.setPhysicFloor()
+
+        this.setPhysicCeiling()
+
+
+
+
     }
+
 
     setPhysicBall()
     {
@@ -37,6 +40,23 @@ export default class Physics
             shape: this.ballSphere
         })
         this.world.addBody(this.ballBody)
+    }
+
+    setPhysicCube()
+    {
+        this.cubeShape = new CANNON.Box(
+            new CANNON.Vec3(0.5, 0.5, 0.5)
+        )
+        this.cubeBody = new CANNON.Body({
+            mass: 1,
+            position: new CANNON.Vec3(3, 0.5, 0)
+        })
+        this.cubeBody.addShape(this.cubeShape, new CANNON.Vec3(0, 0, 0))
+        this.cubeBody.addShape(this.cubeShape, new CANNON.Vec3(0, 1, 0))
+        this.cubeBody.addShape(this.cubeShape, new CANNON.Vec3(1, 0, 0))
+        this.world.addBody(this.cubeBody)
+
+
     }
 
     setPhysicFloor()
@@ -50,6 +70,22 @@ export default class Physics
 
         this.floorBody.quaternion.setFromAxisAngle(
             new CANNON.Vec3(-1, 0, 0),
+            Math.PI * 0.5
+        )
+    }
+
+    setPhysicCeiling()
+    {
+        this.ceilingShape = new CANNON.Plane()
+        this.ceilingBody = new CANNON.Body({
+            mass: 0,
+            shape: this.ceilingShape,
+            position: new CANNON.Vec3(0, 4, -2)
+        })
+        this.world.addBody(this.ceilingBody)
+
+        this.ceilingBody.quaternion.setFromAxisAngle(
+            new CANNON.Vec3(1, 0, 0),
             Math.PI * 0.5
         )
     }
@@ -75,9 +111,18 @@ export default class Physics
             position: new CANNON.Vec3(0, PARAMS.room.height / 2, - PARAMS.room.depth / 2)
         })
 
+        this.frontWallShape = new CANNON.Plane()
+        this.frontWallBody = new CANNON.Body({
+            mass: 0,
+            shape: this.frontWallShape,
+            position: new CANNON.Vec3(0, 0, 4)
+        })
+
+
         this.world.addBody(this.leftWallBody)
         this.world.addBody(this.rightWallBody)
         this.world.addBody(this.backWallBody)
+        this.world.addBody(this.frontWallBody)
 
         this.leftWallBody.quaternion.setFromAxisAngle(
             new CANNON.Vec3(0, 1, 0),
