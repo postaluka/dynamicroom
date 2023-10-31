@@ -17,6 +17,8 @@ export default class Textures
             '../../envMap/01/nz.png',
         ])
 
+        this.bg = this.loader.textures.load('../../textures/bg_photo.jpg')
+
         // Bricks
         // const bricks_x = 0.7
         // const bricks_y = 0.7

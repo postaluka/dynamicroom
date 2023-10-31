@@ -108,21 +108,22 @@ export default class Physics
         this.backWallBody = new CANNON.Body({
             mass: 0,
             shape: this.backWallShape,
-            position: new CANNON.Vec3(0, PARAMS.room.height / 2, - PARAMS.room.depth / 2)
+            position: new CANNON.Vec3(0, PARAMS.room.height / 2, -PARAMS.room.depth / 2)
         })
-
         this.frontWallShape = new CANNON.Plane()
         this.frontWallBody = new CANNON.Body({
             mass: 0,
             shape: this.frontWallShape,
-            position: new CANNON.Vec3(0, 0, 4)
+            position: new CANNON.Vec3(0, PARAMS.room.height / 2, PARAMS.room.depth / 2)
         })
+
 
 
         this.world.addBody(this.leftWallBody)
         this.world.addBody(this.rightWallBody)
         this.world.addBody(this.backWallBody)
         this.world.addBody(this.frontWallBody)
+
 
         this.leftWallBody.quaternion.setFromAxisAngle(
             new CANNON.Vec3(0, 1, 0),
@@ -134,6 +135,10 @@ export default class Physics
             - Math.PI * 0.5
         )
 
+        this.frontWallBody.quaternion.setFromAxisAngle(
+            new CANNON.Vec3(0, 1, 0),
+            - Math.PI
+        )
 
     }
 

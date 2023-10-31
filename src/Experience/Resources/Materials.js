@@ -19,6 +19,10 @@ export default class Materials
             wireframe: true
         })
 
+        this.bg = new THREE.MeshBasicMaterial({
+            map: this.textures.bg
+        })
+
         // this.bricks = new THREE.MeshStandardMaterial({
         //     map: this.textures.bricksColor,
         //     metalness: 0.6,

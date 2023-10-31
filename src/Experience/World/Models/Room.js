@@ -34,6 +34,9 @@ export default class Room
         this.positionWindowX = 2.2
         this.widthWindowGeometry = 1.5
 
+        // BG
+        this.setBg()
+
         // Set models
         this.setWalls()
         this.setBackWall()
@@ -157,9 +160,9 @@ export default class Room
         )
 
         // this.ceilingShape.position.y = 2
-        this.frontWallShape.position.copy(this.physics.frontWallBody.position)
-        this.frontWallShape.quaternion.copy(this.physics.frontWallBody.quaternion)
-        this.instance.add(this.frontWallShape)
+        // this.frontWallShape.position.copy(this.physics.frontWallBody.position)
+        // this.frontWallShape.quaternion.copy(this.physics.frontWallBody.quaternion)
+        // this.instance.add(this.frontWallShape)
     }
 
     updateWireframe()
@@ -282,6 +285,8 @@ export default class Room
         const widthUpdate = utils.math.mapRange(value, 0, 10, 0, 10)
         this.positionWindowX = utils.math.mapRange(value, 0, 10, -0.1, 2.2)
         this.widthWindowGeometry = utils.math.mapRange(value, 0, 10, 0.5, 1.5)
+        const bgPositionZ = utils.math.mapRange(value, 0, 10, -88, - PARAMS.room.depth - 26)
+        const bgPositionY = utils.math.mapRange(value, 0, 10, 5, 7.5)
 
         this.backWall.geometry = new THREE.BoxGeometry(PARAMS.room.width, PARAMS.room.height, 0.25)
         this.backWall.geometry.translate(0, PARAMS.room.height / 2, - PARAMS.room.depth / 2)
@@ -294,6 +299,9 @@ export default class Room
         this.leftWall.position.copy(this.physics.leftWallBody.position)
         this.physics.rightWallBody.position.x = PARAMS.room.width / 2
         this.rightWall.position.copy(this.physics.rightWallBody.position)
+
+        this.bgPlane.position.z = bgPositionZ
+        this.bgPlane.position.y = bgPositionY
 
     }
 
@@ -316,6 +324,16 @@ export default class Room
         this.updateWireframe()
 
 
+    }
+
+    setBg()
+    {
+        this.bgPlane = new THREE.Mesh(
+            new THREE.PlaneGeometry(15, 15, 1, 1),
+            this.materials.bg
+        )
+        this.bgPlane.position.set(0, 7.5, - PARAMS.room.depth - 26)
+        this.instance.add(this.bgPlane)
     }
 
     debug()
