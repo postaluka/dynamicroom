@@ -1,14 +1,14 @@
 import * as THREE from 'three'
 
-import Debug from './Utils/Debug';
+import Debug from './Global/Debug.js';
 
-import Sizes from "./Utils/Sizes";
-import Time from "./Utils/Time";
-import Camera from './Camera';
-import Renderer from './Renderer';
-import World from './World/World';
+import Sizes from "./Setup/Sizes.js";
+import Time from "./Setup/Time.js";
+import Camera from './Setup/Camera.js';
+import Renderer from './Setup/Renderer.js';
+import World from './World/World.js';
 
-import Textures from './Resources/Texture';
+import Textures from './Resources/Texture.js';
 
 let instance = null
 

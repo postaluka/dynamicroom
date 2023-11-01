@@ -1,12 +1,11 @@
 import * as THREE from 'three'
 
-import Experience from "../Experience";
+import Experience from "../Experience.js";
 
-import Lights from './Lights';
+import Lights from './Lights/Lights.js';
 
-import Cube from './Models/Cube';
-
-import Room from './Models/Room';
+import Cube from './Room/Cube.js';
+import Room from './Room/Room.js';
 
 export default class World
 {
@@ -18,8 +17,8 @@ export default class World
         this.lights = new Lights()
 
         this.cube = new Cube()
-
         this.room = new Room()
+
 
         // Add lights
         this.scene.add(

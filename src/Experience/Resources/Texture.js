@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 
-import Loaders from '../Utils/Loaders'
+import Loaders from './Loaders'
 
 export default class Textures
 {
