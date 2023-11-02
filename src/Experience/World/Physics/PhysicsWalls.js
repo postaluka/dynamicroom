@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import CANNON from "cannon";
+import * as CANNON from 'cannon-es'
 import PARAMS from "../../Global/PARAMS";
 
 export default class PhysicsWalls

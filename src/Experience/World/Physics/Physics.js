@@ -1,75 +1,56 @@
 import * as THREE from 'three'
-import CANNON from "cannon";
+import * as CANNON from 'cannon-es'
+import CannonDebugger from 'cannon-es-debugger'
+
 import PARAMS from "../../Global/PARAMS";
+
+import Experience from '../../Experience';
 
 import PhysicsWalls from './PhysicsWalls';
 import PhysicsPrimitives from './PhysicsPrimitives';
-// import PhysicSofa from './PhysicSofa';
+import PhysicSofa from './PhysicSofa';
 
 // import Spheres from "./Models/Spheres";
 
+console.log(CannonDebugger);
+
 export default class Physics
 {
-    constructor()
+    constructor(scene)
     {
+        this.experience = new Experience()
+
         // Time
         this.clock = new THREE.Clock()
         this.oldElapsedTime = 0
-
-        // this.spheres = new Spheres()
 
         this.world = new CANNON.World()
         this.world.gravity.set(0, -9.82, 0)
         this.world.broadphase = new CANNON.SAPBroadphase(this.world)
 
+        this.cannonDebugger = new CannonDebugger(
+            this.experience.scene,
+            this.world
+        )
+
         this.physicsWalls = new PhysicsWalls(this.world)
         this.physicsPrimitives = new PhysicsPrimitives(this.world)
-        // this.physicSofa = new PhysicSofa()
+        this.physicSofa = new PhysicSofa()
 
-        // this.setPhysicSofa()
-
-    }
-
-
-    setPhysicBall()
-    {
-        this.ballSphere = new CANNON.Sphere(PARAMS.sphere.radius)
-        this.ballBody = new CANNON.Body({
-            mass: 1,
-            position: new CANNON.Vec3(-3, PARAMS.sphere.radius + 2),
-            shape: this.ballSphere
-        })
-        this.world.addBody(this.ballBody)
-    }
-
-    setPhysicCube()
-    {
-        this.cubeShape = new CANNON.Box(
-            new CANNON.Vec3(0.5, 0.5, 0.5)
-        )
-        this.cubeBody = new CANNON.Body({
-            mass: 1,
-            position: new CANNON.Vec3(3, 0.5, 0)
-        })
-        this.cubeBody.addShape(this.cubeShape, new CANNON.Vec3(0, 0, 0))
-        this.cubeBody.addShape(this.cubeShape, new CANNON.Vec3(0, 1, 0))
-        this.cubeBody.addShape(this.cubeShape, new CANNON.Vec3(1, 0, 0))
-        this.world.addBody(this.cubeBody)
-
+        this.setPhysicSofa()
 
     }
+
 
     setPhysicSofa()
     {
-        this.world.addBody(this.physicSofa.ballBody)
+        this.world.addBody(this.physicSofa.sofaBody)
     }
 
     changePosition(geometry, rigidBody)
     {
         rigidBody.position.x = - PARAMS.room.width / 2
         geometry.position.copy(rigidBody.position)
-
-        console.log(rigidBody.position);
 
     }
 
@@ -81,6 +62,8 @@ export default class Physics
 
         // Update physics
         this.world.step(1 / 60, deltaTime, 3)
+        this.cannonDebugger.update()
+
 
         // console.log(deltaTime);
     }

@@ -9,15 +9,17 @@ export default class Sofa
         this.loaders = new Loaders()
         this.world = world
 
+        this.instance = new THREE.Group()
+        this.world.add(this.instance)
+
         this.loaders.gltf.load(
             '../../../3Dmodels/sofa_01.gltf',
             (gltf) =>
             {
                 const children = [...gltf.scene.children]
-                console.log(children);
                 for (const child of children)
                 {
-                    this.world.add(child)
+                    this.instance.add(child)
                 }
 
             })

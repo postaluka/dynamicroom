@@ -2,12 +2,10 @@ import * as THREE from "three"
 import * as BufferGeometryUtils from 'three/examples/jsm/utils/BufferGeometryUtils.js'
 import { SUBTRACTION, INTERSECTION, ADDITION, Brush, Evaluator } from 'three-bvh-csg';
 
-import CANNON from "cannon"
 import utils from 'canvas-sketch-util'
 
 import PARAMS from "../../Global/PARAMS"
 import Experience from "../../Experience"
-import Materials from "../../Resources/Materials"
 
 import Walls from "./Walls";
 import Primitives from "./Primitives";
@@ -16,6 +14,8 @@ import Physics from "../Physics/Physics"
 import PhysicsWireframe from "../Physics/PhysicWireframe"
 
 import Sofa from './Sofa'
+
+import Materials from "../../Resources/Materials"
 
 export default class Room 
 {
@@ -28,12 +28,10 @@ export default class Room
         this.experience = new Experience()
         this.materials = new Materials()
 
-        this.physics = new Physics()
-        this.world = new CANNON.World()
-        this.world.gravity.set(0, -9.82, 0)
-
+        // Room group
         this.instance = new THREE.Group()
 
+        this.physics = new Physics(this.instance)
 
         // Set primitives
         this.primitives = new Primitives(this.instance)
@@ -42,11 +40,11 @@ export default class Room
         this.walls = new Walls(this.instance)
 
         // Set models
-        // this.sofa = new Sofa(this.instance)
+        this.sofa = new Sofa(this.instance)
 
         // Set wireframes
         this.physicWireframe = new PhysicsWireframe()
-        // this.setWireframes()
+        this.setWireframes()
 
         // Set debug
         this.debug()
@@ -81,18 +79,18 @@ export default class Room
 
     update()
     {
-        const elaspesTime = this.clock.getElapsedTime()
-        const deltaTime = elaspesTime - this.oldElapsedTime
-        this.oldElapsedTime = elaspesTime
 
-        // Update physics
-        this.physics.world.step(1 / 60, deltaTime, 3)
+        this.physics.update()
 
         this.primitives.ball.position.copy(this.physics.physicsPrimitives.ballBody.position)
         this.primitives.ball.quaternion.copy(this.physics.physicsPrimitives.ballBody.quaternion)
 
         this.primitives.cubes.position.copy(this.physics.physicsPrimitives.cubeBody.position)
         this.primitives.cubes.quaternion.copy(this.physics.physicsPrimitives.cubeBody.quaternion)
+
+        this.sofa.instance.position.copy(this.physics.physicSofa.sofaBody.position)
+
+        this.updateWireframes()
 
     }
 
@@ -120,9 +118,15 @@ export default class Room
 
     setWireframes()
     {
-        this.instance.add(
-            this.physicWireframe.shapeBottom
-        )
+        // console.log(this.physicWireframe.sofaMesh);
+        // this.instance.add(
+        //     this.physicWireframe.sofaMesh
+        // )
+    }
+
+    updateWireframes()
+    {
+        this.physicWireframe.sofaMesh.position.copy(this.physics.physicSofa.sofaBody.position)
     }
 }
 

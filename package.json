@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "cannon": "^0.6.2",
+    "cannon-es": "^0.20.0",
+    "cannon-es-debugger": "^1.0.0",
     "canvas-sketch-util": "^1.10.0",
     "gsap": "^3.12.2",
     "lil-gui": "^0.18.2",

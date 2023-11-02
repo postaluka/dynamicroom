@@ -16,7 +16,7 @@ export default class Materials
 
         this.wireframe = new THREE.MeshBasicMaterial({
             color: 'red',
-            wireframe: true
+            wireframe: false
         })
 
         this.bg = new THREE.MeshBasicMaterial({

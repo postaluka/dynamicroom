@@ -1,11 +1,12 @@
 import * as THREE from 'three'
+import CannonDebugger from 'cannon-es-debugger'
 
 import Experience from "../Experience.js";
 
 import Lights from './Lights/Lights.js';
 
-import Cube from './Room/Cube.js';
 import Room from './Room/Room.js';
+import Physics from './Physics/Physics.js';
 
 export default class World
 {
@@ -16,8 +17,8 @@ export default class World
 
         this.lights = new Lights()
 
-        this.cube = new Cube()
         this.room = new Room()
+        this.physics = new Physics()
 
 
         // Add lights
@@ -39,6 +40,7 @@ export default class World
     update()
     {
         this.room.update()
+
 
     }
 }
