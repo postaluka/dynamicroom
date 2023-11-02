@@ -10,9 +10,6 @@ import PhysicsWalls from './PhysicsWalls';
 import PhysicsPrimitives from './PhysicsPrimitives';
 import PhysicSofa from './PhysicSofa';
 
-// import Spheres from "./Models/Spheres";
-
-console.log(CannonDebugger);
 
 export default class Physics
 {
@@ -30,14 +27,33 @@ export default class Physics
 
         this.cannonDebugger = new CannonDebugger(
             this.experience.scene,
-            this.world
+            this.world,
+            {
+                color: 'red',
+                onInit(body, mesh)
+                {
+                    document.addEventListener('keydown', (event) =>
+                    {
+                        if (event.key === 'd')
+                        {
+                            mesh.visible = !mesh.visible
+                        }
+                    })
+
+                },
+            }
         )
+
 
         this.physicsWalls = new PhysicsWalls(this.world)
         this.physicsPrimitives = new PhysicsPrimitives(this.world)
         this.physicSofa = new PhysicSofa()
 
         this.setPhysicSofa()
+
+
+
+
 
     }
 
@@ -66,6 +82,17 @@ export default class Physics
 
 
         // console.log(deltaTime);
+    }
+
+    debug()
+    {
+
+        // Debug
+        this.debug = this.experience.debug
+        if (this.debug.active)
+        {
+            const folderPhysics = this.debug.ui.addFolder('Physics')
+        }
     }
 
 

@@ -16,7 +16,7 @@ const PARAMS = {
     sphere: {
         radius: 0.85,
     },
-    objectsToUpdate: [],
+    cannonDebuger: true
 }
 
 export default PARAMS 

@@ -12,7 +12,6 @@ import Materials from "../../Resources/Materials"
 import Primitives from "./Primitives";
 
 import Physics from "../Physics/Physics"
-import PhysicsWireframe from "../Physics/PhysicWireframe"
 
 import Sofa from './Sofa'
 

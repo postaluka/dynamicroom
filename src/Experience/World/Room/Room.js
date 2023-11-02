@@ -11,7 +11,6 @@ import Walls from "./Walls";
 import Primitives from "./Primitives";
 
 import Physics from "../Physics/Physics"
-import PhysicsWireframe from "../Physics/PhysicWireframe"
 
 import Sofa from './Sofa'
 
@@ -41,10 +40,6 @@ export default class Room
 
         // Set models
         this.sofa = new Sofa(this.instance)
-
-        // Set wireframes
-        this.physicWireframe = new PhysicsWireframe()
-        this.setWireframes()
 
         // Set debug
         this.debug()
@@ -89,8 +84,7 @@ export default class Room
         this.primitives.cubes.quaternion.copy(this.physics.physicsPrimitives.cubeBody.quaternion)
 
         this.sofa.instance.position.copy(this.physics.physicSofa.sofaBody.position)
-
-        this.updateWireframes()
+        this.sofa.instance.quaternion.copy(this.physics.physicSofa.sofaBody.quaternion)
 
     }
 
@@ -116,18 +110,6 @@ export default class Room
         }
     }
 
-    setWireframes()
-    {
-        // console.log(this.physicWireframe.sofaMesh);
-        // this.instance.add(
-        //     this.physicWireframe.sofaMesh
-        // )
-    }
-
-    updateWireframes()
-    {
-        this.physicWireframe.sofaMesh.position.copy(this.physics.physicSofa.sofaBody.position)
-    }
 }
 
 
